@@ -1,29 +1,35 @@
 require('dotenv').config()
 
-const { Sequelize, Model, DataTypes } = require('sequelize')
+const { Sequelize, Model, DataTypes, QueryTypes } = require('sequelize')
 const express = require('express')
 const app = express()
 
 const sequelize = new Sequelize(process.env.DATABASE_URL)
 
-class Note extends Model {}
+class Blog extends Model {}
 
-Note.init(
+Blog.init(
   {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    content: {
+    author: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
+    url: {
       type: DataTypes.TEXT,
       allowNull: false,
     },
-    important: {
-      type: DataTypes.BOOLEAN,
+    title: {
+      type: DataTypes.TEXT,
+      allowNull: false,
     },
-    date: {
-      type: DataTypes.DATE,
+    likes: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
     },
   },
   {
@@ -34,6 +40,25 @@ Note.init(
   }
 )
 
+const main = async () => {
+  try {
+    await sequelize.authenticate()
+    const blogs = await sequelize.query('SELECT * FROM blogs', {
+      type: QueryTypes.SELECT,
+    })
+    console.log(
+      blogs.map((blog) => {
+        return `${blog.author}: ${blog.title}, ${blog.likes} likes`
+      })
+    )
+  } catch (error) {
+    console.error('Unable to connect to the database:', error)
+  }
+}
+
+main()
+
+/*
 app.get('/api/notes', async (req, res) => {
   const notes = await Note.findAll()
   res.json(notes)
@@ -53,3 +78,4 @@ const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
+*/
