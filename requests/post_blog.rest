@@ -1,0 +1,8 @@
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+
+{
+    "author": "Someone",
+    "url": "https://url.net",
+    "title": "This blog will be removed"
+}

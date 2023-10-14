@@ -1,8 +1,10 @@
 require('dotenv').config()
 
-const { Sequelize, Model, DataTypes, QueryTypes } = require('sequelize')
+const { Sequelize, Model, DataTypes } = require('sequelize')
 const express = require('express')
+
 const app = express()
+app.use(express.json())
 
 const sequelize = new Sequelize(process.env.DATABASE_URL)
 
@@ -36,40 +38,44 @@ Blog.init(
     sequelize,
     underscored: true,
     timestamps: false,
-    modelName: 'note',
+    modelName: 'blog',
   }
 )
 
-const main = async () => {
-  try {
-    await sequelize.authenticate()
-    const blogs = await sequelize.query('SELECT * FROM blogs', {
-      type: QueryTypes.SELECT,
-    })
-    console.log(
-      blogs.map((blog) => {
-        return `${blog.author}: ${blog.title}, ${blog.likes} likes`
-      })
-    )
-  } catch (error) {
-    console.error('Unable to connect to the database:', error)
-  }
-}
+Blog.sync()
 
-main()
-
-/*
-app.get('/api/notes', async (req, res) => {
-  const notes = await Note.findAll()
-  res.json(notes)
+app.get('/api/blogs', async (req, res) => {
+  const blogs = await Blog.findAll()
+  console.log(JSON.stringify(blogs, null, 2))
+  res.json(blogs)
 })
 
-app.post('/api/notes', async (req, res) => {
+app.get('/api/blogs/:id', async (req, res) => {
+  const blog = await Blog.findByPk(req.params.id)
+  if (blog) {
+    console.log(blog.toJSON())
+    res.json(blog)
+  } else {
+    res.status(404).end()
+  }
+})
+
+app.post('/api/blogs', async (req, res) => {
   try {
-    const note = await Note.create(req.body)
-    return res.json(note)
+    const blog = await Blog.create(req.body)
+    return res.json(blog.toJSON())
   } catch (error) {
     return res.status(400).json({ error })
+  }
+})
+
+app.delete('/api/blogs/:id', async (req, res) => {
+  const blog = await Blog.findByPk(req.params.id)
+  if (blog) {
+    await blog.destroy()
+    return res.status(204).end()
+  } else {
+    return res.status(404).end()
   }
 })
 
@@ -78,4 +84,3 @@ const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
-*/
