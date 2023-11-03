@@ -30,6 +30,16 @@ router.post('/', async (req, res) => {
   }
 })
 
+router.put('/:id', blogFinder, async (req, res) => {
+  if (req.blog) {
+    req.blog.likes = req.body.likes
+    await req.blog.save()
+    res.json(req.blog)
+  } else {
+    res.status(404).end()
+  }
+})
+
 router.delete('/:id', blogFinder, async (req, res) => {
   if (req.blog) {
     await req.blog.destroy()
