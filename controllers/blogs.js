@@ -55,18 +55,20 @@ router.post('/', tokenExtractor, async (req, res) => {
   return res.json(blog.toJSON()).status(204).end()
 })
 
+router.delete('/:id', tokenExtractor, blogFinder, async (req, res) => {
+  const user = await User.findByPk(req.decodedToken.id)
+  if (user && req.blog) {
+    await req.blog.destroy()
+    res.status(200).end()
+  } else {
+    return res.status(404).end()
+  }
+})
+
 router.put('/:id', blogFinder, async (req, res) => {
   req.blog.likes = req.body.likes
   await req.blog.save()
   res.json(req.blog).status(204).end()
-})
-
-router.delete('/:id', blogFinder, async (req, res) => {
-  if (req.blog) {
-    await req.blog.destroy()
-  } else {
-    return res.status(404).end()
-  }
 })
 
 module.exports = router
