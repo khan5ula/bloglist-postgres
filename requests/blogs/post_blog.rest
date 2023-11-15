@@ -1,9 +1,9 @@
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImtyaXN0aWFuLmhhbm51bGFAcHJvdG9uLm1lIiwiaWQiOjEsImlhdCI6MTY5OTgxMTg0OH0.FDw6c3lmFB2j7oU54B0H4i2_QnUSlaKG0T5WuUzDzeA
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImtyaXN0aWFuLmhhbm51bGFAcHJvdG9uLm1lIiwiaWQiOjEsImlhdCI6MTcwMDA3MDg3N30.eyX8IKv2X9_2Kog0XI4EtrhhiMUUz6cmoLGiZ2vC-nI
 
 {
-    "author": "Osmo Soininvaara",
-    "url": "https://www.soininvaara.fi/",
-    "title": "Osmo Soininvaara kommentoi yhteiskuntaa ja politiikkaa"
+    "author": "Kristian Hannula",
+    "url": "https://www.kristianhannula.com/",
+    "title": "My personal website and blog"
 }
