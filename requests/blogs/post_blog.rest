@@ -1,9 +1,9 @@
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
-Authorization: bearer 
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImtyaXN0aWFuLmhhbm51bGFAcHJvdG9uLm1lIiwiaWQiOjEsImlhdCI6MTcwMjQwODA4Nn0.KR3_20BqMocDyTLJMFNVFt_mHIKWQCivw4uNVrAKRGE
 
 {
     "author": "Kristian Hannula",
-    "url": "https://www.kristianhannula.com/",
-    "title": "My personal website and blog"
+    "url": "https://www.some.com/",
+    "title": "Some Test Blog"
 }
