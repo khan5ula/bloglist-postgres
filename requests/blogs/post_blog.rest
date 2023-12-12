@@ -1,6 +1,6 @@
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
-Authorization: bearer
+Authorization: bearer 
 
 {
     "author": "Kristian Hannula",
