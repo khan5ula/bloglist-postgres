@@ -3,13 +3,8 @@ const router = require('express').Router()
 const jwt = require('jsonwebtoken')
 const { SECRET } = require('../util/config')
 const { Op } = require('sequelize')
-const { tokenExtractor } = require('../util/middleware')
+const { tokenExtractor, blogFinder } = require('../util/middleware')
 const { Blog, User } = require('../models')
-
-const blogFinder = async (req, res, next) => {
-  req.blog = await Blog.findByPk(req.params.id)
-  next()
-}
 
 router.get('/', async (req, res) => {
   const blogs = await Blog.findAll({

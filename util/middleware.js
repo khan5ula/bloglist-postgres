@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken')
 const { SECRET } = require('./config.js')
+const { Blog, ReadingList } = require('../models/')
 
 const tokenExtractor = (req, res, next) => {
   const authorization = req.get('authorization')
@@ -15,4 +16,14 @@ const tokenExtractor = (req, res, next) => {
   next()
 }
 
-module.exports = { tokenExtractor }
+const blogFinder = async (req, res, next) => {
+  req.blog = await Blog.findByPk(req.params.id)
+  next()
+}
+
+const readingListFinder = async (req, res, next) => {
+  req.readingList = await ReadingList.findByPk(req.params.id)
+  next()
+}
+
+module.exports = { tokenExtractor, blogFinder, readingListFinder }
