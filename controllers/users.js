@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const { User } = require('../models')
+const { User, Reading, ReadingList } = require('../models')
 const { Blog } = require('../models')
 const { tokenExtractor } = require('../util/middleware')
 
@@ -61,7 +61,16 @@ router.put('/:username', tokenExtractor, isAdmin, async (req, res) => {
 })
 
 router.get('/:id', async (req, res) => {
-  const user = await User.findByPk(req.params.id)
+  const user = await User.findByPk(req.params.id, {
+    include: [
+      {
+        model: ReadingList,
+        as: 'readinglist',
+        attributes: { exclude: ['userId'] },
+        through: { attributes: [] },
+      },
+    ],
+  })
   if (user) {
     res.json(user)
   } else {

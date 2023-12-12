@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
     attributes: { exclude: ['userId'] },
     include: {
       model: User,
-      attributes: ['name'],
+      attributes: ['id', 'username', 'name'],
     },
     where: {
       [Op.or]: {
