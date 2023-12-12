@@ -64,10 +64,12 @@ router.get('/:id', async (req, res) => {
   const user = await User.findByPk(req.params.id, {
     include: [
       {
-        model: ReadingList,
-        as: 'readinglist',
+        model: Blog,
+        as: 'readings',
         attributes: { exclude: ['userId'] },
-        through: { attributes: [] },
+        through: {
+          attributes: [],
+        },
       },
     ],
   })
