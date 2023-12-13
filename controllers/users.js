@@ -1,6 +1,7 @@
 const router = require('express').Router()
 const { User, Reading, ReadingList } = require('../models')
 const { Blog } = require('../models')
+const { Op } = require('sequelize')
 const { tokenExtractor } = require('../util/middleware')
 
 router.get('/', async (req, res) => {
@@ -61,6 +62,9 @@ router.put('/:username', tokenExtractor, isAdmin, async (req, res) => {
 })
 
 router.get('/:id', async (req, res) => {
+  const where = {}
+  if (req.query.read) where.isRead = req.query.read
+
   const user = await User.findByPk(req.params.id, {
     include: [
       {
@@ -68,11 +72,14 @@ router.get('/:id', async (req, res) => {
         as: 'readings',
         attributes: { exclude: ['userId'] },
         through: {
+          as: 'readinglist_entry',
           attributes: ['id', 'isRead'],
+          where,
         },
       },
     ],
   })
+
   if (user) {
     res.json(user)
   } else {
